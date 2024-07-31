@@ -8,86 +8,87 @@ import { IconAlertTriangleFilled, IconPlus } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 export default function MenusPage() {
-    const { data: menus, error } = useSWR<Menu[]>("/menus");
+  const { data: menus, error } = useSWR<Menu[]>("/menus");
 
-    return (
-        <Layout>
-            <section
-                className="h-[500px] w-full text-white bg-pink-200 bg-cover bg-blend-multiply flex flex-col justify-center items-center px-4 text-center"
-                style={{
-                    backgroundImage: `url(${cafeBackgroundImage})`,
-                }}
+  return (
+    <Layout>
+      <section
+        className="relative h-[500px] w-full bg-cover bg-center text-white"
+        style={{ backgroundImage: `url(${cafeBackgroundImage})` }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-center p-6">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2">เมนู</h1>
+          <p className="text-lg md:text-xl">รายการเมนูทั้งหมด</p>
+        </div>
+      </section>
+
+      <section className="container mx-auto py-10">
+        <div className="flex justify-between mb-6">
+          <h1 className="text-2xl font-semibold">รายการเมนู</h1>
+          <Button
+            component={Link}
+            leftSection={<IconPlus />}
+            to="/menus/create"
+            size="md"
+            variant="outline"
+            className="flex items-center space-x-2"
+          >
+            เพิ่มเมนู
+          </Button>
+        </div>
+
+        {!menus && !error && <Loading />}
+        {error && (
+          <Alert
+            color="red"
+            title="เกิดข้อผิดพลาดในการอ่านข้อมูล"
+            icon={<IconAlertTriangleFilled />}
+            className="mb-6"
+          >
+            {error.message}
+          </Alert>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {menus?.map((menu) => (
+            <div
+              className="border border-neutral-300 bg-white rounded-lg shadow-lg overflow-hidden"
+              key={menu.id}
             >
-                <h1 className="text-5xl mb-2">เมนูของเรา</h1>
-                <h2>รายการอาหารและเครื่องดื่มที่เรามีให้บริการ</h2>
-            </section>
+              <img
+                src="https://placehold.co/300x400"
+                alt={menu.name}
+                className="w-full h-64 object-cover"
+              />
+              <div className="p-5">
+                <h2 className="text-lg font-semibold truncate">{menu.name}</h2>
+                <p className="text-sm text-gray-600 mt-1">ราคา {menu.price} บาท</p>
+              </div>
 
-            <section className="container mx-auto py-8">
-                <div className="flex justify-between mb-4">
-                    <h1>รายการอาหารและเครื่องดื่ม</h1>
-                    <Button
-                        component={Link}
-                        leftSection={<IconPlus />}
-                        to="/menus/create"
-                        size="xs"
-                        variant="primary"
-                        className="flex items-center space-x-2"
-                    >
-                        เพิ่มเมนู
-                    </Button>
-                </div>
-
-                {!menus && !error && <Loading />}
-                {error && (
-                    <Alert
-                        color="red"
-                        title="เกิดข้อผิดพลาดในการอ่านข้อมูล"
-                        icon={<IconAlertTriangleFilled />}
-                    >
-                        {error.message}
-                    </Alert>
-                )}
-
-                {menus && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {menus.map((menu) => (
-                            <div
-                                key={menu.id}
-                                className="border border-solid border-neutral-200 bg-white rounded-lg shadow-md"
-                            >
-                                <img
-                                    src={menu.image_url} // Ensure image_url is valid
-                                    alt={menu.name}
-                                    className="w-full object-cover aspect-[3/4]"
-                                />
-                                <div className="p-4">
-                                    <h2 className="text-lg font-semibold line-clamp-2">{menu.name}</h2>
-                                    <p className="text-xs text-neutral-500">ราคา {menu.price} บาท</p>
-                                </div>
-
-                                <div className="flex justify-between p-4 border-t border-neutral-200">
-                                    <Button
-                                        component={Link}
-                                        to={`/orders/${menu.id}`}
-                                        size="xs"
-                                        variant="default"
-                                    >
-                                        ซื้อ
-                                    </Button>
-                                    <Button
-                                        component={Link}
-                                        to={`/menus/${menu.id}`}
-                                        size="xs"
-                                        variant="default"
-                                    >
-                                        ดูรายละเอียด
-                                    </Button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </section>
-        </Layout>
-    );
+              <div className="flex justify-around border-t border-gray-200 bg-gray-50 p-3">
+                <Button
+                  component={Link}
+                  to={`/orders/${menu.id}`}
+                  size="sm"
+                  variant="light"
+                  className="flex-grow mx-1"
+                >
+                  ซื้อ
+                </Button>
+                <Button
+                  component={Link}
+                  to={`/menus/${menu.id}`}
+                  size="sm"
+                  variant="light"
+                  className="flex-grow mx-1"
+                >
+                  ดูรายละเอียด
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </Layout>
+  );
 }
