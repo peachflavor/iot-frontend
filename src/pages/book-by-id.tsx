@@ -40,29 +40,20 @@ export default function BookByIdPage() {
                 <div className="col-span-2 px-4 space-y-2 py-4">
                   <h3>รายละเอียดหนังสือ</h3>
                   <p className="indent-4">
-                    {/* TODO: เพิ่มรายละเอียดหนังสือ */}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, neque.
-                    Necessitatibus nihil quibusdam molestiae, asperiores nesciunt quod aliquid
-                    accusamus iusto sint amet optio laudantium eius, facilis iure ipsa assumenda
-                    alias pariatur! Quis ad ratione amet fugiat, et culpa cupiditate, veritatis
-                    beatae sed voluptatum a reprehenderit id odit quas? Enim, earum?
+                    {book.detail}
                   </p>
 
                   <h3>เรื่องย่อ</h3>
                   <p className="indent-4">
-                    {/* TODO: เพิ่มเรื่องย่อ */}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia officiis amet nemo
-                    ut placeat aliquam neque id voluptates quod nihil.
+                    {book.story}
                   </p>
 
                   <h3>หมวดหมู่</h3>
-                  {/* TODO: เพิ่มหมวดหมู่(s) */}
-                  <div className="flex flex-wrap gap-2">
-                    <Badge color="teal">#หมวดหมู่ 1</Badge>
-                    <Badge color="teal">#หมวดหมู่ 2</Badge>
-                    <Badge color="teal">#หมวดหมู่ 3</Badge>
-                    <Badge color="teal">#หมวดหมู่ 4</Badge>
-                  </div>
+                  {<div className="flex flex-wrap gap-2">
+                    {book.classification.split(",").map((tag) => (
+                      <Badge key={tag} color="teal">#{tag}</Badge>
+                    ))}
+                  </div>}
                 </div>
               </div>
 
