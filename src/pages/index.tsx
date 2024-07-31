@@ -1,6 +1,6 @@
 import Layout from "../components/layout";
 import cafeBackgroundImage from "../assets/images/bg-cafe-1.jpeg";
-import ajPanwitImage from "../assets/images/aj-panwit.jpg";
+import ajPanwitImage from "../assets/images/cat.jpeg";
 import coffeeImage from "../assets/images/coffee-1.jpg";
 
 export default function HomePage() {
