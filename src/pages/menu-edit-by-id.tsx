@@ -1,9 +1,9 @@
 import useSWR from "swr";
 import { Menu } from "../lib/models";
 import { useNavigate, useParams } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import { Alert, Button, Checkbox, Container, Divider, NumberInput, TextInput } from "@mantine/core";
-import Loading from "../components/Loading";
+import Loading from "../components/loading";
 import { IconAlertTriangleFilled, IconTrash } from "@tabler/icons-react";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
@@ -82,19 +82,13 @@ const MenuEditPage = () => {
           message: "ไม่พบข้อมูลเมนูที่ต้องการ",
           color: "red",
         });
-      } else if (error.response?.status === 422) {
+    } else if (error.response?.status ?? 0 >= 500) {
         notifications.show({
-          title: "ข้อมูลไม่ถูกต้อง",
-          message: "กรุณาตรวจสอบข้อมูลที่กรอกใหม่อีกครั้ง",
-          color: "red",
+            title: "ข้อผิดพลาดจากเซิร์ฟเวอร์",
+            message: "กรุณาลองอีกครั้งในภายหลัง",
+            color: "red",
         });
-      } else if (error.response?.status >= 500) {
-        notifications.show({
-          title: "ข้อผิดพลาดจากเซิร์ฟเวอร์",
-          message: "กรุณาลองอีกครั้งในภายหลัง",
-          color: "red",
-        });
-      }
+    }
     } else {
       notifications.show({
         title: "ข้อผิดพลาด",
