@@ -1,129 +1,20 @@
-import { useNavigate, useParams } from "react-router-dom";
-import useSWR from "swr";
-import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { Alert, Button, Checkbox, Container, Divider, NumberInput, TextInput } from "@mantine/core";
-import { IconAlertTriangleFilled, IconTrash } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
-import { modals } from "@mantine/modals";
+import { Alert, Button, Container, Divider } from "@mantine/core";
 import Layout from "../components/layout";
-import Loading from "../components/loading";
+import { Link, useParams } from "react-router-dom";
 import { Menu } from "../lib/models";
-import { isNotEmpty, useForm } from "@mantine/form";
+import useSWR from "swr";
+import Loading from "../components/loading";
+import { IconAlertTriangleFilled, IconEdit } from "@tabler/icons-react";
 
-const EditMenuPage = () => {
+const MenuDetailsPage = () => {
   const { menuId } = useParams();
-  const navigate = useNavigate();
 
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [hasInitialized, setHasInitialized] = useState(false);
-
-  const { data: menu, error, isLoading } = useSWR<Menu>(`/menus/${menuId}`);
-
-  const form = useForm({
-    initialValues: {
-      name: "",
-      price: 0,
-      detail: "",
-      ingredient: "",
-      is_published: false,
-    },
-    validate: {
-      name: isNotEmpty("กรุณากรอกชื่อเมนู"),
-      price: isNotEmpty("กรุณากรอกราคา"),
-      detail: isNotEmpty("กรุณากรอกรายละเอียดเมนู"),
-      ingredient: isNotEmpty("กรุณากรอกส่วนผสม"),
-    },
-  });
-
-  useEffect(() => {
-    if (menu && !hasInitialized) {
-      form.setValues(menu);
-      setHasInitialized(true);
-    }
-  }, [menu, form, hasInitialized]);
-
-  const handleSubmit = async (values: typeof form.values) => {
-    try {
-      setIsProcessing(true);
-      await axios.patch(`/menus/${menuId}`, values);
-      notifications.show({
-        title: "การแก้ไขสำเร็จ",
-        message: "ข้อมูลเมนูได้รับการอัพเดตเรียบร้อยแล้ว",
-        color: "teal",
-      });
-      navigate(`/menus/${menuId}`);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const status = error.response?.status;
-        if (status === 404) {
-          notifications.show({
-            title: "ไม่พบเมนู",
-            message: "ไม่พบข้อมูลเมนูที่ต้องการแก้ไข",
-            color: "red",
-          });
-        } else if (status ?? 0 >= 500) {
-            notifications.show({
-                title: "ข้อผิดพลาดของเซิร์ฟเวอร์",
-                message: "เกิดข้อผิดพลาดในเซิร์ฟเวอร์ กรุณาลองใหม่",
-                color: "red",
-            });
-        }
-      } else {
-        notifications.show({
-          title: "เกิดข้อผิดพลาด",
-          message: "เกิดข้อผิดพลาด กรุณาลองใหม่ หรือดูข้อมูลเพิ่มเติมที่ Console",
-          color: "red",
-        });
-      }
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      setIsProcessing(true);
-      await axios.delete(`/menus/${menuId}`);
-      notifications.show({
-        title: "ลบเมนูสำเร็จ",
-        message: "เมนูถูกลบออกจากระบบเรียบร้อยแล้ว",
-        color: "red",
-      });
-      navigate("/menus");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const status = error.response?.status ?? 0;
-        if (status === 404) {
-            notifications.show({
-                title: "ไม่พบเมนู",
-                message: "ไม่พบข้อมูลเมนูที่ต้องการลบ",
-                color: "red",
-            });
-        } else if (status >= 500) {
-            notifications.show({
-                title: "ข้อผิดพลาดของเซิร์ฟเวอร์",
-                message: "เกิดข้อผิดพลาดในเซิร์ฟเวอร์ กรุณาลองใหม่",
-                color: "red",
-            });
-        }
-      } else {
-        notifications.show({
-          title: "เกิดข้อผิดพลาด",
-          message: "เกิดข้อผิดพลาด กรุณาลองใหม่ หรือดูข้อมูลเพิ่มเติมที่ Console",
-          color: "red",
-        });
-      }
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+  const { data: menu, isLoading, error } = useSWR<Menu>(`/menus/${menuId}`);
 
   return (
     <Layout>
-      <Container className="mt-8">
-        <h1 className="text-xl font-bold">แก้ไขเมนู</h1>
-
+      <Container className="mt-4">
+        {/* ใช้ isLoading แทน !menu */}
         {isLoading && !error && <Loading />}
         {error && (
           <Alert
@@ -136,72 +27,41 @@ const EditMenuPage = () => {
         )}
 
         {menu && (
-          <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-6">
-            <TextInput
-              label="ชื่อเมนู"
-              placeholder="กรุณากรอกชื่อเมนู"
-              {...form.getInputProps("name")}
-            />
+          <>
+            <h1 className="text-2xl font-bold">{menu.name}</h1>
+            <p className="italic text-neutral-500 mb-4">ราคา: {menu.price} บาท</p>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <img
+                src="https://placehold.co/150x200"
+                alt={menu.name}
+                className="w-full object-cover aspect-[3/4]"
+              />
+              <div className="col-span-2 px-4 space-y-2 py-4">
+                <h3 className="text-xl font-semibold">รายละเอียดเมนู</h3>
+                <p className="indent-4">{menu.detail}</p>
 
-            <NumberInput
-              label="ราคา"
-              placeholder="กรุณากรอกราคา"
-              min={0}
-              {...form.getInputProps("price")}
-            />
-
-            <TextInput
-              label="รายละเอียด"
-              placeholder="กรุณากรอกรายละเอียดเมนู"
-              {...form.getInputProps("detail")}
-            />
-
-            <TextInput
-              label="ส่วนผสม"
-              placeholder="กรุณากรอกส่วนผสม"
-              {...form.getInputProps("ingredient")}
-            />
-
-            <Checkbox
-              label="เผยแพร่"
-              {...form.getInputProps("is_published", { type: "checkbox" })}
-            />
-
-            <Divider />
-
-            <div className="flex justify-between">
-              <Button
-                color="red"
-                leftSection={<IconTrash />}
-                size="xs"
-                onClick={() => {
-                  modals.openConfirmModal({
-                    title: "ยืนยันการลบ",
-                    children: (
-                      <span className="text-xs">
-                        การลบเมนูจะไม่สามารถย้อนกลับได้
-                      </span>
-                    ),
-                    labels: { confirm: "ลบ", cancel: "ยกเลิก" },
-                    onConfirm: handleDelete,
-                    confirmProps: {
-                      color: "red",
-                    },
-                  });
-                }}
-              >
-                ลบเมนูนี้
-              </Button>
-
-              <Button type="submit" loading={isProcessing}>
-                บันทึกการเปลี่ยนแปลง
-              </Button>
+                <h3 className="text-xl font-semibold">ส่วนผสม</h3>
+                <p className="indent-4">{menu.ingredient}</p>
+              </div>
             </div>
-          </form>
+
+            <Divider className="mt-4" />
+
+            <Button
+              color="blue"
+              size="xs"
+              component={Link}
+              to={`/menus/${menu.id}/edit`}
+              className="mt-4"
+              leftSection={<IconEdit />}
+            >
+              แก้ไขข้อมูลเมนู
+            </Button>
+          </>
         )}
       </Container>
     </Layout>
   );
 };
 
-export default EditMenuPage;
+export default MenuDetailsPage;
