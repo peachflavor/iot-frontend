@@ -1,5 +1,5 @@
 import Layout from "../components/layout";
-import cafeBackgroundImage from "../assets/images/bg-cafe-1.jpg";
+import cafeBackgroundImage from "../assets/images/bg-cafe-1.jpeg";
 import ajPanwitImage from "../assets/images/aj-panwit.jpg";
 import coffeeImage from "../assets/images/coffee-1.jpg";
 
@@ -13,7 +13,7 @@ export default function HomePage() {
         }}
       >
         <h1 className="text-5xl mb-2">Welcome to IoT Library & Cafe</h1>
-        <h2>ร้านกาแฟที่มีหนังสืออยู่นิดหน่อยให้คุณได้อ่าน</h2>
+        <h2>ร้านกาแฟและขนมที่มีหนังสืออยู่นิดหน่อยให้คุณได้อ่าน</h2>
       </section>
 
       <section className="container mx-auto py-8">
@@ -32,13 +32,8 @@ export default function HomePage() {
           </div>
         </div>
         <p className="text-right mt-8">
-          ปัจจุบันค่าเฟ่ และห้องสมุดของเรา อยู่ในช่วงการดูแลของ ....
-          {/* TODO: ชื่อของตนเอง, รหัสประจำตัวนักศึกษา และแนะนำคาเฟ่นี้ต่ออีกสักหน่อย + ใส่รูปของตนเอง (ไม่จำเป็นหากไม่สะดวกใจใส่รูป) */}
-          ซึ่งมีบริการ... Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
-          placeat sit ea sapiente officia sunt cumque impedit, reiciendis quis eius asperiores!
-          Minus, mollitia? Vitae inventore odio quod ducimus similique, expedita sequi, reiciendis
-          rem recusandae impedit voluptatibus quo veritatis ut quis et suscipit? Eligendi, neque!
-          Earum quaerat unde similique totam. Pariatur!
+          ปัจจุบันค่าเฟ่ และห้องสมุดของเรา อยู่ในช่วงการดูแลของ ญาตาวี ฤกษประสูต 65070055 
+          ซึ่งมีบริการ อาหารและเครื่องดื่ม และหนังสือที่หลากหลาย สามารถเข้ามาอ่านได้ฟรี และสามารถยืมไปอ่านที่บ้านได้ โดยไม่มีค่าใช้จ่าย ฟรี!!!!
         </p>
       </section>
 
