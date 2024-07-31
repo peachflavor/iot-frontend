@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <Layout>
       <section
-        className="h-[500px] w-full text-white bg-cover bg-blend-multiply flex flex-col justify-center items-center px-4 text-center"
+        className="h-[500px] w-full text-white bg-pink-600 bg-cover bg-blend-multiply flex flex-col justify-center items-center px-4 text-center"
         style={{
           backgroundImage: `url(${cafeBackgroundImage})`,
         }}
