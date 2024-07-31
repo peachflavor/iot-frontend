@@ -15,11 +15,12 @@ export interface Menu {
   price: number;
   detail: string;
   ingredient: string;
-  is_published: boolean;
+  is_published: boolean
+  image_url: string;
 }
 
 export interface Order {
-  id: number;
+  id: string;
   name: string;
   total: number;
   price: number;
