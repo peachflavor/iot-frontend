@@ -3,7 +3,7 @@ import cafeBackgroundImage from "../assets/images/bg-cafe-2.jpg";
 import useSWR from "swr";
 import { Order } from "../lib/models";
 import Loading from "../components/loading";
-import { Alert, Button } from "@mantine/core";
+import { Alert} from "@mantine/core";
 import { IconAlertTriangleFilled } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
